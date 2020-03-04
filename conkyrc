@@ -4,15 +4,16 @@ update_interval 1
 cpu_avg_samples 2
 net_avg_samples 2
 temperature_unit celsius
+net_interface enp6s0
 
 double_buffer yes
 no_buffers yes
 text_buffer_size 2048
 
 gap_x 25
-gap_y 85
+gap_y 25
 minimum_size 220 900
-maximum_width 220
+maximum_width 240
 own_window yes
 own_window_transparent yes
 own_window_argb_visual yes
@@ -26,7 +27,7 @@ alignment top_right
 draw_shades yes
 draw_outline no
 draw_borders no
-draw_graph_borders no
+draw_graph_borders yes
 default_shade_color black
 
 override_utf8_locale yes
@@ -59,20 +60,24 @@ ${font eurofurence light,:size=17}Видеокарта${alignr}${alignr}${hwmon 
 ${font eurofurence light,:size=17}Жесткий диск${alignr}${alignr}${hddtemp /dev/sda}°C
 
 ${offset 0}${font econ,Regular:size=20}j${font eurofurence light,Light:size=24} ${alignr}Сеть
+${font eurofurence light,Light:size=17}IP_int ${font Cantarell Light,:size=14}${alignr}${exec ip -4 address | grep inet | awk '{print $2}' | grep -Ev '127.0.0.1' | head -n 1}
+${font eurofurence light,Light:size=17}IP_ext ${font Cantarell Light,:size=14}${alignr}${exec curl icanhazip.com}
 ${font eurofurence light,Light:size=17}Загружено${alignr}${totaldown enp6s0}
 ${font eurofurence light,Light:size=17}Отдано${alignr}${totalup enp6s0}
-${font eurofurence light,Light:size=17}Загрузка:${alignr}${downspeed enp6s0} 
-${font eurofurence light,Light:size=17}Отдача:${alignr}${upspeed enp6s0}
+${font eurofurence light,Light:size=17}Загрузка${alignr}${downspeed enp6s0}
+${font eurofurence light,Light:size=17}Отдача${alignr}${upspeed enp6s0}
 
 ${offset 0}${font econ,Regular:size=19}W${font eurofurence light,Light:size=24} ${alignr}Нагрузка
 ${font eurofurence light,Light:size=17}${color2}CPU ${color0}${alignr}${cpu cpu0}%
-${cpubar cpu0 3,}
+${color1}${cpubar cpu 6,}
+${color0}Read: $color${diskio_read}$alignr${color0}Write: $color${diskio_write}
+${diskiograph /dev/sda 1CC9A7 1CC9A7 30,}
 ${font eurofurence light,Light:size=15}${top name 1} $alignr ${top cpu 1}%
 ${font eurofurence light,Light:size=15}${top name 2} $alignr ${top cpu 2}%
 ${font eurofurence light,Light:size=15}${top name 3} $alignr ${top cpu 3}%
 
 ${font eurofurence light,Light:size=17}${color2}RAM ${color0}${alignr}${mem}
-${membar 3,}
+${color1}${membar 5,}${color0}
 ${font eurofurence light,Light:size=15}${top_mem name 1} $alignr ${top_mem mem_res 1}
 ${font eurofurence light,Light:size=15}${top_mem name 2} $alignr ${top_mem mem_res 2}
 ${font eurofurence light,Light:size=15}${top_mem name 3} $alignr ${top_mem mem_res 3}
